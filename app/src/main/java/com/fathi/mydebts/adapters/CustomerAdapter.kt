@@ -13,11 +13,9 @@ import com.fathi.mydebts.DBManager
 import com.fathi.mydebts.activities.AddDebtActivity
 import com.fathi.mydebts.activities.DebtsActivity
 import androidx.core.view.get
-import com.fathi.mydebts.activities.EditCustomerActivity
 import com.google.android.material.snackbar.Snackbar
 import android.view.LayoutInflater
 import android.widget.*
-import kotlinx.android.synthetic.main.activity_edit_customer.view.*
 
 
 class CustomerAdapter(private val context: Context, private val customers: ArrayList<Customer>) : RecyclerView.Adapter<CustomerAdapter.Holder>() {
@@ -40,18 +38,11 @@ class CustomerAdapter(private val context: Context, private val customers: Array
             inflater.inflate(R.menu.menu_customer, menu)
             menu.setHeaderTitle("Select Action")
             menu[0].setOnMenuItemClickListener {
-//                val dialog = Dialog(this)
-//                dialog.setContentView(R.layout.activity_edit_customer)
-//                dialog.show()
-//                context.startActivity(Intent(context, EditCustomerActivity::class.java).putExtra("id", customers[layoutPosition].id))
-                showEditCustomerActivity(layoutPosition)
+                editCustomer(layoutPosition)
                 true
             }
             menu[1].setOnMenuItemClickListener {
                 Snackbar.make(view, "Deleted", Snackbar.LENGTH_LONG).show()
-//                db.deleteCustomer(customers[layoutPosition].id)
-//                customers.removeAt(layoutPosition)
-//                notifyItemChanged(layoutPosition)
                 removeCustomer(layoutPosition, customers[layoutPosition].id)
                 true
             }
@@ -85,7 +76,7 @@ class CustomerAdapter(private val context: Context, private val customers: Array
         return customers.size
     }
 
-    fun showEditCustomerActivity(position: Int) {
+    fun editCustomer(position: Int) {
         val customer = customers[position]
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.activity_edit_customer, null)
@@ -100,7 +91,11 @@ class CustomerAdapter(private val context: Context, private val customers: Array
         edtPhoneCE.setText(customer.phone)
         btnEditCustomerCE.setOnClickListener {
             if (edtNameCE.text.isNotEmpty()) {
-                db.updateCustomer(Customer(customer.id, edtNameCE.text.toString(), edtPhoneCE.text.toString()))
+                customer.name = edtNameCE.text.toString()
+                customer.phone = edtPhoneCE.text.toString()
+                db.updateCustomer(Customer(customer.id, customer.name, customer.phone))
+                customers[position] = customer
+                notifyItemChanged(position)
                 dialog.dismiss()
             } else {
                 Toast.makeText(context, "You must enter the name", Toast.LENGTH_LONG).show()

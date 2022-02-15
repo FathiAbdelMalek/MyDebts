@@ -14,6 +14,7 @@ import com.fathi.mydebts.models.Debt
 import kotlinx.android.synthetic.main.activity_debts.*
 import kotlin.collections.ArrayList
 
+
 class DebtsActivity : AppCompatActivity() {
 
     private val db = DBManager(this)

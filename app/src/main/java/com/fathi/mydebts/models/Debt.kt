@@ -22,23 +22,6 @@ class Debt {
         this.value = value
         this.date = date
         this.description = description
-        this.image = image
-        this.customerId = customerId
-    }
-
-    constructor(id: Int, value: Int, date: String, description: String, image: ByteArray, customerId: Int) {
-        this.id = id
-        this.value = value
-        this.date = date
-        this.description = description
-        this.image = image
-        this.customerId = customerId
-    }
-
-    constructor(value: Int, date: String, description: String, customerId: Int) {
-        this.value = value
-        this.date = date
-        this.description = description
         this.customerId = customerId
     }
 
